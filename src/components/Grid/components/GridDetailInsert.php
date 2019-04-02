@@ -8,16 +8,38 @@
 
 namespace Tulinkry\Components\Grid;
 
+use Tulinkry\Forms\Container;
 
 class GridDetailInsert extends GridDetail
 {
     const QUERY_PARAM = 'insert';
 
-    public function isInsert()
+    /**
+     * Process data from the form in this component.
+     * @param array $data array of data from the form
+     */
+    public function fillContainer(Container $container)
     {
-        return true;
     }
 
+    /**
+     * Process data from the form in this component.
+     * @param array $data array of data from the form
+     */
+    public function processData($data)
+    {
+        $this->model->create($data);
+    }
+
+    /**
+     * Return additional query parameters appended to the form action URL.
+     * <pre>
+     * $params = array(
+     *  'id' => 3,
+     * );
+     * </pre>
+     * @return array
+     */
     public function getQueryParameters()
     {
         return [
@@ -25,8 +47,11 @@ class GridDetailInsert extends GridDetail
         ];
     }
 
-    public function processData($data)
+    /**
+     * @return boolean when this component handles insertion
+     */
+    public function isInsert()
     {
-        $this->model->create($data);
+        return true;
     }
 }

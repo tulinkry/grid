@@ -11,9 +11,9 @@ namespace Tulinkry\Components\Grid;
 
 use Exception;
 use Nette\Application\UI\Control;
-use Nette\Database\IRow;
 use Nette\Utils\Callback;
 use Tulinkry\Application\UI\Form;
+use Tulinkry\Forms\Container;
 
 abstract class GridDetail extends Control
 {
@@ -68,6 +68,13 @@ abstract class GridDetail extends Control
      */
     abstract public function processData($data);
 
+
+    /**
+     * Process data from the form in this component.
+     * @param array $data array of data from the form
+     */
+    abstract public function fillContainer(Container $container);
+
     public function createComponentDetailForm($name)
     {
         $form = new Form($this, $name);
@@ -77,10 +84,7 @@ abstract class GridDetail extends Control
             Callback::invoke($this->formFactory, $container);
         }
 
-        if ($this->toValues) {
-            $converted = Callback::invoke($this->toValues, $this->entity);
-            $container->setDefaults($converted ?: $this->entity);
-        }
+        $this->fillContainer($container);
 
         $container->addSubmit('submit', $this->isInsert() ? 'Vložit' : 'Uložit')
             ->setAttribute('class', 'btn btn-primary');
