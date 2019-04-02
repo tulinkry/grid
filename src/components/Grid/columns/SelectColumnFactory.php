@@ -22,9 +22,9 @@ class SelectColumnFactory extends ColumnFactory
      * @param $heading
      * @param array $options
      */
-    public function __construct($key, $heading, array $options)
+    public function __construct($key, array $options)
     {
-        parent::__construct($key, $heading);
+        parent::__construct($key);
         $this->options = $options;
     }
 
