@@ -24,4 +24,9 @@ class GridDetailInsert extends GridDetail
             self::QUERY_PARAM => true
         ];
     }
+
+    public function processData($data)
+    {
+        $this->model->create($data);
+    }
 }

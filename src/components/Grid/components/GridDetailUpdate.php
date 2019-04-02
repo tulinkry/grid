@@ -22,6 +22,7 @@ class GridDetailUpdate extends GridDetail
     /**
      * GridDetail constructor.
      * @param IRow $entity
+     * @param $model
      * @param callable $formFactory
      * @param $toValues
      * @param $fromValues
@@ -42,5 +43,10 @@ class GridDetailUpdate extends GridDetail
         return [
             self::QUERY_PARAM => $this->entity->id
         ];
+    }
+
+    public function processData($data)
+    {
+        $this->model->update($this->entity->id, $data);
     }
 }

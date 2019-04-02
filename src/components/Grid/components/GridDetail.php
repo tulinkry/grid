@@ -11,6 +11,7 @@ namespace Tulinkry\Components\Grid;
 
 use Exception;
 use Nette\Application\UI\Control;
+use Nette\Database\IRow;
 use Nette\Utils\Callback;
 use Tulinkry\Application\UI\Form;
 
@@ -28,7 +29,9 @@ abstract class GridDetail extends Control
      * @var callable
      */
     protected $fromValues;
-    private $model;
+    /**
+     */
+    protected $model;
 
     /**
      * GridDetail constructor.
@@ -43,10 +46,27 @@ abstract class GridDetail extends Control
         $this->model = $model;
     }
 
+    /**
+     * @return boolean when this component handles insertion
+     */
     abstract public function isInsert();
 
+    /**
+     * Return additional query parameters appended to the form action URL.
+     * <pre>
+     * $params = array(
+     *  'id' => 3,
+     * );
+     * </pre>
+     * @return array
+     */
     abstract public function getQueryParameters();
 
+    /**
+     * Process data from the form in this component.
+     * @param array $data array of data from the form
+     */
+    abstract public function processData($data);
 
     public function createComponentDetailForm($name)
     {
@@ -71,11 +91,7 @@ abstract class GridDetail extends Control
             $converted = Callback::invoke($this->fromValues, $values['detail']);
 
             try {
-                if ($this->isInsert()) {
-                    $this->model->create($converted ?: $values['detail']);
-                } else {
-                    $this->model->update($this->entity->id, $converted ?: $values['detail']);
-                }
+                $this->processData($converted ?: $values['detail']);
                 $this->presenter->flashMessage('Záznam byl ' . ($this->isInsert() ? 'v' : 'u') . 'ložen.', 'success');
             } catch (Exception $e) {
                 $this->presenter->flashMessage('Záznam nebyl ' . ($this->isInsert() ? 'v' : 'u') . 'ložen: ' . $e->getMessage(), 'danger');
