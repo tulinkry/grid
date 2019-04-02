@@ -43,6 +43,6 @@ class SelectColumnFactory extends ColumnFactory
             throw new InvalidArgumentException('Calling ' . get_class() . ' expects at least one argument');
         }
 
-        return new SelectColumn(func_get_arg(0), $this->key, $this->heading, $this->options, $this->dataCallback);
+        return new SelectColumn(func_get_arg(0), $this->key, $this->options, $this->dataCallback);
     }
 }

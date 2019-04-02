@@ -29,6 +29,6 @@ class DateColumnFactory extends ColumnFactory
         if (func_num_args() < 1) {
             throw new InvalidArgumentException('Calling ' . get_class() . ' expects at least one argument');
         }
-        return new DateColumn(func_get_arg(0), $this->key, $this->heading, $this->format);
+        return new DateColumn(func_get_arg(0), $this->key, $this->format);
     }
 }
