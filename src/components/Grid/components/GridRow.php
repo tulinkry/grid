@@ -14,6 +14,7 @@ use Nette\Application\UI\Multiplier;
 use Nette\Database\IRow;
 use Nette\Utils\Callback;
 use Tulinkry\Application\UI\Control;
+use Tulinkry\Components\Grid;
 
 class GridRow extends Control
 {

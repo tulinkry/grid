@@ -8,7 +8,8 @@
   ],
   "require": {
     "php": ">=5.6, <7",
-    "nette/nette": ">=2.3"
+    "nette/nette": ">=2.3, <2.4",
+    "nette/database": ">=2.3, <2.4"
   },
   "autoload": {
     "classmap": [
