@@ -29,7 +29,8 @@ class GridRow extends Control
 
     /**
      * GridDetail constructor.
-     * @param IRow $entity
+     * @param IRow $entity the entity displayed on this row
+     * @param Grid $grid the parent grid for this row
      */
     public function __construct(IRow $entity, Grid $grid)
     {
@@ -38,6 +39,10 @@ class GridRow extends Control
         $this->grid = $grid;
     }
 
+    /**
+     * Handle the delete operation on a row. Redirect or redraw the parent grid element.
+     * @throws \Nette\Application\AbortException
+     */
     public function handleDelete()
     {
         try {
