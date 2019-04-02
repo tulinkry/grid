@@ -1,0 +1,35 @@
+{snippet}
+
+{if $renderUpdate}
+
+{control update}
+
+{elseif $renderInsert}
+
+{control insert}
+
+{else}
+
+<table class="table">
+    <thead>
+    <tr>
+        {foreach $headings as $key => $header}
+        <th>{$header}</th>
+        {/foreach}
+        {if $grid->editable}
+        <th>
+            <a href="{plink this, name => $grid->name, insert => true}" class="fa fa-plus"></a>
+        </th>
+        {/if}
+    </tr>
+    </thead>
+    <tbody>
+    {foreach $entities as $id => $entity}
+    {control gridRow-$id}
+    {/foreach}
+    </tbody>
+</table>
+
+{/if}
+
+{/snippet}

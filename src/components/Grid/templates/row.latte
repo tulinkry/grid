@@ -1,0 +1,14 @@
+{if $entity}
+<tr n:snippet="">
+    {foreach $columns as $key => $column}
+    <td>{control column-$key $entity}</td>
+    {/foreach}
+    {if $grid->editable}
+    <td>
+        <a class="fa fa-edit text-warning" href="{plink this, name => $grid->name, $query_param => $entity->id}"></a>
+        <a class="fa fa-trash text-danger ajax" {if !empty($grid->confirmDelete)}data-confirm="{$grid->confirmDelete}"{/if}
+            href="{link delete!}"></a>
+    </td>
+    {/if}
+</tr>
+{/if}

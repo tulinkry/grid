@@ -1,0 +1,14 @@
+{snippet}
+<div class="btn-group">
+    <button type="button" class="btn btn-sm {$selected['class']} dropdown-toggle" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+        {$selected['label']} <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+        {foreach $options as $value => $option}
+        <li><a class="dropdown-item ajax"
+               href="{link click!, id => $entity->id, value => $value}">{$option['label']}</a></li>
+        {/foreach}
+    </ul>
+</div>
+{/snippet}
