@@ -146,6 +146,7 @@ class Grid extends Control
         $isInsert = $this->httpRequest->getUrl()->getQueryParameter(GridDetailInsert::QUERY_PARAM);
         $this->template->renderUpdate = $id !== null;
         $this->template->renderInsert = !!$isInsert;
+        $this->template->headings = $this->columnsHeadings;
         $this->template->columns = $this->columnsFactories;
         $this->template->entities = $this->model->all();
         $this->template->grid = $this;
