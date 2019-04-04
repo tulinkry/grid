@@ -14,7 +14,23 @@
     <thead>
     <tr>
         {foreach $headings as $key => $header}
-        <th>{$header}</th>
+        <th>
+            {if isset($sortableState[$key])}
+            {if $sortableState[$key] > 0}
+            <a href="{link sort!, key => $key, direction => ($sortableState[$key] * -1)}" class="ajax">
+                {$header}
+                <span class="fa fa-arrow-up"></span></a>
+            {elseif $sortableState[$key] < 0}
+            <a href="{link sort!, key => $key, direction => ($sortableState[$key] * -1)}" class="ajax">
+                {$header}
+                <span class="fa fa-arrow-down"></span></a>
+            {else}
+            <a href="{link sort!, key => $key, direction => 1}" class="ajax">{$header}</a>
+            {/if}
+            {else}
+            {$header}
+            {/if}
+        </th>
         {/foreach}
         {if $grid->editable}
         <th>

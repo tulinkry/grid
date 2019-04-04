@@ -8,13 +8,14 @@
 
 namespace Tulinkry\Components\Grid\Columns;
 
-
+use Nette\Object;
 use Nette\Utils\Callback;
 
-abstract class ColumnFactory
+abstract class ColumnFactory extends Object
 {
     protected $key;
     protected $decode;
+    protected $sortable = false;
 
     /**
      * ColumnFactory constructor.
@@ -33,6 +34,23 @@ abstract class ColumnFactory
     {
         $this->decode = $decode;
         return $this;
+    }
+
+    /**
+     * @param mixed $sortable
+     */
+    public function setSortable($sortable = true)
+    {
+        $this->sortable = $sortable;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSortable()
+    {
+        return $this->sortable;
     }
 
     public function convertEntity($entity)

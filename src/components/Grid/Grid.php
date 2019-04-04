@@ -42,6 +42,7 @@ class Grid extends Control
 
     public $columnsFactories = array();
     public $columnsHeadings = array();
+    private $sortableState = [];
     public $editable;
     public $confirmDelete = '';
 
@@ -57,7 +58,6 @@ class Grid extends Control
         parent::__construct(null, null);
         $this->httpRequest = $httpRequest;
     }
-
 
     /**
      * @param BaseModel $model
@@ -97,24 +97,28 @@ class Grid extends Control
 
     public function addTextColumn($key, $heading)
     {
+        $this->sortableState[$key] = 0;
         $this->columnsHeadings[$key] = $heading;
         return $this->columnsFactories[$key] = new TextColumnFactory($key);
     }
 
     public function addDateColumn($key, $heading)
     {
+        $this->sortableState[$key] = 0;
         $this->columnsHeadings[$key] = $heading;
         return $this->columnsFactories[$key] = new DateColumnFactory($key);
     }
 
     public function addSelectColumn($key, $heading, $options)
     {
+        $this->sortableState[$key] = 0;
         $this->columnsHeadings[$key] = $heading;
         return $this->columnsFactories[$key] = new SelectColumnFactory($key, $options);
     }
 
     public function addLinkColumn($key, $heading)
     {
+        $this->sortableState[$key] = 0;
         $this->columnsHeadings[$key] = $heading;
         return $this->columnsFactories[$key] = new LinkColumnFactory($key);
     }
@@ -138,9 +142,37 @@ class Grid extends Control
         return $this[$name] = new GridDetailInsert($this->model, $this->formFactory, $this->toValues, $this->fromValues);
     }
 
+    public function handleSort($key, $direction)
+    {
+        if (isset($this->columnsFactories[$key]) &&
+            $this->columnsFactories[$key]->sortable &&
+            isset($this->sortableState[$key])) {
+            $this->sortableState[$key] = (int)$direction;
+        }
+
+        if ($this->presenter->isAjax()) {
+            $this->redrawControl();
+        } else {
+            $this->redirect('this');
+        }
+    }
+
     public function render()
     {
         $this->template->setFile(__DIR__ . '/templates/grid.latte');
+
+        foreach ($this->columnsFactories as $key => $factory) {
+            if (!$factory->sortable) {
+                unset($this->sortableState[$key]);
+            }
+        }
+
+        $orderBy = [];
+        foreach ($this->sortableState as $key => $direction) {
+            if ($direction !== 0) {
+                $orderBy[$key] = $direction > 0 ? 'DESC' : 'ASC';
+            }
+        }
 
         $id = $this->httpRequest->getUrl()->getQueryParameter(GridDetailUpdate::QUERY_PARAM);
         $isInsert = $this->httpRequest->getUrl()->getQueryParameter(GridDetailInsert::QUERY_PARAM);
@@ -148,7 +180,8 @@ class Grid extends Control
         $this->template->renderInsert = !!$isInsert;
         $this->template->headings = $this->columnsHeadings;
         $this->template->columns = $this->columnsFactories;
-        $this->template->entities = $this->model->all();
+        $this->template->sortableState = $this->sortableState;
+        $this->template->entities = $this->model->by([], $orderBy);
         $this->template->grid = $this;
         $this->template->render();
     }
