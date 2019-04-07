@@ -92,7 +92,10 @@ abstract class GridDetail extends Control
         $form->action = $this->presenter->link('this', array_merge(['name' => $this->name], $this->getQueryParameters()));
 
         $form->onSuccess[] = function ($form, $values) {
-            $converted = Callback::invoke($this->fromValues, $values['detail']);
+            $converted = $values['detail'];
+            if($this->fromValues) {
+                $converted = Callback::invoke($this->fromValues, $values['detail']);
+            }
 
             try {
                 $this->processData($converted ?: $values['detail']);
