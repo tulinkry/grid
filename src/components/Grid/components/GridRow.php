@@ -75,7 +75,8 @@ class GridRow extends Control
         $this->template->columns = $this->grid->columnsFactories;
         $this->template->entity = $this->entity;
         $this->template->grid = $this->grid;
-        $this->template->query_param = GridDetailUpdate::QUERY_PARAM;
+        $this->template->update_query_param = GridDetailUpdate::QUERY_PARAM;
+        $this->template->copy_query_param = GridDetailCopyInsert::QUERY_PARAM;
         $this->template->render();
     }
 }

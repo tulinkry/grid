@@ -5,7 +5,8 @@
     {/foreach}
     {if $grid->editable}
     <td>
-        <a class="fa fa-edit text-warning" href="{plink this, name => $grid->name, $query_param => $entity->id}"></a>
+        <a class="fa fa-edit text-warning" href="{plink this, name => $grid->name, $update_query_param => $entity->id}"></a>
+        <a class="fa fa-copy text-warning" href="{plink this, name => $grid->name, $copy_query_param => $entity->id}"></a>
         <a class="fa fa-trash text-danger ajax" {if !empty($grid->confirmDelete)}data-confirm="{$grid->confirmDelete}"{/if}
             href="{link delete!}"></a>
     </td>

@@ -17,6 +17,7 @@ use Tulinkry\Components\Grid\Columns\DateColumnFactory;
 use Tulinkry\Components\Grid\Columns\LinkColumnFactory;
 use Tulinkry\Components\Grid\Columns\SelectColumnFactory;
 use Tulinkry\Components\Grid\Columns\TextColumnFactory;
+use Tulinkry\Components\Grid\GridDetailCopyInsert;
 use Tulinkry\Components\Grid\GridDetailInsert;
 use Tulinkry\Components\Grid\GridDetailUpdate;
 use Tulinkry\Components\Grid\GridRow;
@@ -137,6 +138,12 @@ class Grid extends Control
         return $this[$name] = new GridDetailUpdate($this->model->entity($id), $this->model, $this->formFactory, $this->toValues, $this->fromValues);
     }
 
+    public function createComponentCopyInsert($name)
+    {
+        $id = $this->httpRequest->getUrl()->getQueryParameter(GridDetailCopyInsert::QUERY_PARAM);
+        return $this[$name] = new GridDetailCopyInsert($this->model->entity($id), $this->model, $this->formFactory, $this->toValues, $this->fromValues);
+    }
+
     public function createComponentInsert($name)
     {
         return $this[$name] = new GridDetailInsert($this->model, $this->formFactory, $this->toValues, $this->fromValues);
@@ -176,8 +183,10 @@ class Grid extends Control
 
         $id = $this->httpRequest->getUrl()->getQueryParameter(GridDetailUpdate::QUERY_PARAM);
         $isInsert = $this->httpRequest->getUrl()->getQueryParameter(GridDetailInsert::QUERY_PARAM);
+        $isCopyInsert = $this->httpRequest->getUrl()->getQueryParameter(GridDetailCopyInsert::QUERY_PARAM);
         $this->template->renderUpdate = $id !== null;
-        $this->template->renderInsert = !!$isInsert;
+        $this->template->renderCopyInsert = $isCopyInsert;
+        $this->template->renderInsert = !!$isCopyInsert && !!$isInsert;
         $this->template->headings = $this->columnsHeadings;
         $this->template->columns = $this->columnsFactories;
         $this->template->sortableState = $this->sortableState;
