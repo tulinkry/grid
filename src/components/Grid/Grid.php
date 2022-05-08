@@ -185,8 +185,8 @@ class Grid extends Control
         $isInsert = $this->httpRequest->getUrl()->getQueryParameter(GridDetailInsert::QUERY_PARAM);
         $isCopyInsert = $this->httpRequest->getUrl()->getQueryParameter(GridDetailCopyInsert::QUERY_PARAM);
         $this->template->renderUpdate = $id !== null;
-        $this->template->renderCopyInsert = $isCopyInsert;
-        $this->template->renderInsert = !!$isCopyInsert && !!$isInsert;
+        $this->template->renderCopyInsert = !!$isCopyInsert;
+        $this->template->renderInsert = !!!$isCopyInsert && !!$isInsert;
         $this->template->headings = $this->columnsHeadings;
         $this->template->columns = $this->columnsFactories;
         $this->template->sortableState = $this->sortableState;
